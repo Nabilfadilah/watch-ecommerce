@@ -15,6 +15,7 @@ type InputFormProps = {
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void; // didefinisikan dengan tipe data untuk konsistensi
   error?: boolean;
   helperText?: string;
+  checked?: boolean;
 };
 
 // memastikan bahwa ref diarahkan ke elemen input HTML yang sesuai.
@@ -32,6 +33,7 @@ const InputForm = forwardRef<HTMLInputElement, InputFormProps>(
       onBlur,
       error,
       helperText,
+      checked
     },
     ref: ForwardedRef<HTMLInputElement>
   ) => {
@@ -50,6 +52,7 @@ const InputForm = forwardRef<HTMLInputElement, InputFormProps>(
           onBlur={onBlur}
           error={error}
           helperText={helperText}
+          checked={checked}
         />
       </div>
     );
