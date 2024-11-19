@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '../elements/button/Button';
 import InputSearch from '../elements/input/InputSearch';
 import InputForm from '../elements/input/InputForm';
 import Label from '../elements/input/Label';
 import Typography from '../elements/text/Typography';
+import { useFilter } from './FilterContext';
 
 interface Product {
     category: string;
@@ -14,6 +15,19 @@ interface FetchResponse {
 }
 
 const Sidebar = () => {
+
+    const {
+        searchQuery,
+        setSearchQuery,
+        selectedCategory,
+        setSelectedCategory,
+        minPrice,
+        setMinPrice,
+        maxPrice,
+        setMaxPrice,
+        // keyword,
+        setKeyword,
+    } = useFilter();
     
     const [categories, setCategories] = useState<string[]>([]);
     const [keywords] = useState<string[]>([
@@ -43,6 +57,32 @@ const Sidebar = () => {
         fetchCategories();
     }, [])
 
+    const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setMinPrice(value ? parseFloat(value) : undefined)
+    }
+
+    const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setMinPrice(value ? parseFloat(value) : undefined)
+    }
+
+    const handleRadioChangeCategories = (category: string) => {
+        setSelectedCategory(category)
+    }
+
+    const hendleKeywordClick = (keyword: string) => {
+        setKeyword(keyword);
+    } 
+
+    const handleResetFilters = () => {
+        setSearchQuery("");
+        setSelectedCategory("");
+        setMinPrice(undefined);
+        setMaxPrice(undefined);
+        setKeyword("");
+    }
+
   return (
     <div className='w-64 p-5 h-screen'>
         <h1 className="text-2xl font-bold mb-10 mt-4">
@@ -54,6 +94,8 @@ const Sidebar = () => {
                 name='search'
                 className='border-2 sm:mb-0'
                 placeholder='Search Product'
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
             />
 
             <div className='flex justify-center items-center'>
@@ -62,12 +104,16 @@ const Sidebar = () => {
                     type='text'
                     className='border-2 mr-2 px-5 py-3 mb-3 w-full'
                     placeholder='Min'
+                    value={minPrice ?? ""}
+                    onChange={handleMinPriceChange}
                 />
                  <InputForm 
                     name='max'
                     type='text'
                     className='border-2 mr-2 px-5 py-3 mb-3 w-full'
                     placeholder='Max'
+                    value={maxPrice ?? ""}
+                    onChange={handleMaxPriceChange}
                 />
             </div>
 
@@ -79,7 +125,14 @@ const Sidebar = () => {
 
                 {categories.map((category, index) => (
                     <Label key={index} className='flex items-center mb-2'>
-                        <InputForm type='radio' name='category' value={category} className='mr-2 w-[16px] h-[16px] cursor-pointer'/>
+                        <InputForm 
+                            type='radio' 
+                            name='category' 
+                            value={category} 
+                            className='mr-2 w-[16px] h-[16px] cursor-pointer' 
+                            onChange={() => handleRadioChangeCategories(category)}
+                            checked={selectedCategory === category}                            
+                        />
                         {category.toUpperCase()}
                     </Label>
                 ))}
@@ -92,6 +145,7 @@ const Sidebar = () => {
                     {keywords.map((keyword, index) => (
                         <Button
                             key={index}
+                            onClick={() => hendleKeywordClick(keyword)}
                             className='block mb-2 px-4 py-2 w-full text-left border rounded hover:bg-gray-200'
                         >
                             {keyword.toUpperCase()}
@@ -100,7 +154,12 @@ const Sidebar = () => {
                 </div>
             </div>
 
-            <Button className='w-full mb-[4rem] py-2 bg-black text-white rounded mt-5 font-bold'>Reset Filters</Button>
+            <Button 
+                className='w-full mb-[4rem] py-2 bg-black text-white rounded mt-5 font-bold'
+                onClick={handleResetFilters}
+            >
+                Reset Filters
+            </Button>
             
         </section>
     </div>
