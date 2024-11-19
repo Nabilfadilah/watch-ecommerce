@@ -6,13 +6,14 @@ type InputSearchProps = {
   placeholder?: string;
   name: string;
   className?: string;
+  value?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void; // memastikan fungsi handler menerima event yang sesuai
 };
 
 // digunakan untuk mengarahkan ref ke elemen input HTML.
 const InputSearch = forwardRef<HTMLInputElement, InputSearchProps>(
   // placeholder properti default Cari..
-  ({ placeholder = "Cari...", name, className, onChange }, ref: ForwardedRef<HTMLInputElement>) => {
+  ({ placeholder = "Cari...", name, className, value, onChange }, ref: ForwardedRef<HTMLInputElement>) => {
     return (
       <div className="relative w-80">
         {/* Ikon Search */}
@@ -26,6 +27,7 @@ const InputSearch = forwardRef<HTMLInputElement, InputSearchProps>(
           name={name}
           id={name}
           ref={ref}
+          value={value}
           onChange={onChange}
         />
       </div>
