@@ -4,7 +4,7 @@ import Input from "./Input";
 
 // Menentukan tipe data untuk properti
 type InputFormProps = {
-  label: string;
+  label?: string;
   name: string;
   type?: string;
   placeholder?: string;
