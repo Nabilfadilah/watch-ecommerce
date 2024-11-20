@@ -92,7 +92,7 @@ const Sidebar = () => {
             <section>
                 <InputSearch
                     name='search'
-                    className='border-2 sm:mb-0'
+                    className='border-2 sm:mb-0 w-52'
                     placeholder='Search Product'
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
