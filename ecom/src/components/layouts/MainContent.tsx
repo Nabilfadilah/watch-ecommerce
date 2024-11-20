@@ -76,14 +76,47 @@ const MainContent = () => {
     }
 
     const filteredProducts = getFilteredProducts();
-    console.log('Data filter product : ', filteredProducts)
+    // console.log('Data filter product : ', filteredProducts)
+
+    const totalProducts = 100;
+    const totalPages = Math.ceil(totalProducts / itemsPerPage)
+
+    const handlePageChange = (page: number) => {
+        if (page > 0 && page <= totalPages) {
+            setCurrentPage(page)
+        }
+    }
+
+    // get pagination
+    const getPaginationButtons = () => {
+        const buttons: number[] = []
+        let startPage = Math.max(1, currentPage - 2)
+        let endPage = Math.min(totalPages + 2)
+
+        if (currentPage - 2 < 1) {
+            endPage = Math.min(totalPages, endPage + (2 - currentPage - 1))
+        }
+
+        if (currentPage + 2 > totalPages) {
+            startPage = Math.min(1, startPage - (2 - totalPages - currentPage))
+        }
+
+        for (let page = startPage; page <= endPage; page++) {
+            buttons.push(page)
+        }
+
+        return buttons;
+    }
 
     return (
         <section className="xl:w-[55rem] lg:w-[55rem] sm:w-[40rem] xs:w-[20rem] p-5">
             <div className="mb-5">
                 <div className="flex flex-col sm:flex-row justify-between items-center">
                     <div className="relative mb-5 mt-5">
-                        <Button className="rounded-full flex items-center">
+                        <Button
+                            className="border px-4 py-2 rounded-full flex items-center"
+                            onClick={() => setDropdownOpen(!dropdownOpen)}
+                        >
                             <BiMenu size={25} className="mr-5" />
 
                             {filter === 'all' ? "Filter" : filter.charAt(0).toLowerCase() + filter.slice(1)}
@@ -128,6 +161,42 @@ const MainContent = () => {
                         />
                     ))}
                 </div>
+
+                <div className="flex flex-col sm:flex-row justify-between items-center mt-5">
+                    {/* previous */}
+                    <Button
+                        className="px-4 mx-2 rounded-full"
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                    >
+                        Previous
+                    </Button>
+
+                    {/* 1,2,3,4,5 */}
+                    <div className="flex flex-wrap justify-center">
+                        {/* pagination button */}
+                        {getPaginationButtons().map((page) => (
+                            <Button
+                                key={page}
+                                onClick={() => handlePageChange(page)}
+                                className={`px-4 py-2 mx-1 rounded-full ${page === currentPage ? "bg-black text-white" : ""}`}
+                            >
+                                {page}
+                            </Button>
+                        ))}
+                    </div>
+
+
+                    {/* next */}
+                    <Button
+                        className="px-4 mx-2 rounded-full"
+                        disabled={currentPage === totalPages}
+                        onClick={() => handlePageChange(currentPage + 1)}
+                    >
+                        Next
+                    </Button>
+                </div>
+
 
             </div>
         </section>
