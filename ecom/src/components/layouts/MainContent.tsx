@@ -3,6 +3,7 @@ import { useFilter } from "./FilterContext"
 import Button from "../elements/button/Button";
 import { BiMenu } from "react-icons/bi";
 import axios from "axios";
+import BookCard from "../fragments/BookCard";
 
 const MainContent = () => {
 
@@ -117,7 +118,15 @@ const MainContent = () => {
 
                 <div className="grid grid-cols-4 sm:grid-cols-3 md:grid-cols-4 gap-5">
                     {/* BookCard */}
-
+                    {filteredProducts.map(product => (
+                        <BookCard
+                            key={product.id}
+                            id={product.id}
+                            title={product.title}
+                            image={product.thumbnail}
+                            price={product.price}
+                        />
+                    ))}
                 </div>
 
             </div>
